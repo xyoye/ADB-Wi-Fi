@@ -31,6 +31,18 @@ data class DeviceViewModel(
     val uniqueId: String
         get() = device.uniqueId
 
+    val showDeveloperOptions: Boolean
+        get() = device.isUsbDevice || (device.isWifiDevice && device.isConnected)
+
+    val layoutBoundsShowing: Boolean
+        get() = device.layoutBoundsShowing
+
+    val gupOverdrawShowing: Boolean
+        get() = device.gupOverdrawShowing
+
+    val hwuiRenderingShowing: Boolean
+        get() = device.hwuiRenderingShowing
+
     enum class ButtonType {
         CONNECT, CONNECT_DISABLED, DISCONNECT
     }

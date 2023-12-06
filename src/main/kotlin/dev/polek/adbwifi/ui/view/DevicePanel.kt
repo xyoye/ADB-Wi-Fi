@@ -119,6 +119,21 @@ class DevicePanel(device: DeviceViewModel) : JBPanel<DevicePanel>(GridBagLayout(
 
         val actionButtons = arrayListOf<JComponent>()
 
+        // layout bounds
+        generateLayoutBoundsButton(device)?.let {
+            actionButtons.add(it)
+        }
+
+        // gpu overdraw
+        generateGupOverdrawButton(device)?.let {
+            actionButtons.add(it)
+        }
+
+        // hwui rendering
+        generateHwuiRenderingButton(device)?.let {
+            actionButtons.add(it)
+        }
+
         if (device.isShareScreenButtonVisible) {
             val shareScreenButton = IconButton(Icons.SHARE_SCREEN, PluginBundle.message("shareScreenTooltip"))
             shareScreenButton.onClickedListener = {
@@ -200,6 +215,54 @@ class DevicePanel(device: DeviceViewModel) : JBPanel<DevicePanel>(GridBagLayout(
         menu.show(event.component, event.x, event.y)
     }
 
+    private fun generateLayoutBoundsButton(device: DeviceViewModel): IconButton? {
+        if (device.showDeveloperOptions.not()) {
+            return null
+        }
+
+        val (icon, message) = if (device.layoutBoundsShowing) {
+            Pair(Icons.LAYOUT_BOUNDS_HIDE, PluginBundle.message("hideLayoutBoundsTip"))
+        } else {
+            Pair(Icons.LAYOUT_BOUNDS_SHOW, PluginBundle.message("showLayoutBoundsTip"))
+        }
+        return IconButton(icon, message).apply {
+            onClickedListener = { listener?.onLayoutBoundsClicked(device) }
+            addMouseListener(hoverListener)
+        }
+    }
+
+    private fun generateGupOverdrawButton(device: DeviceViewModel): IconButton? {
+        if (device.showDeveloperOptions.not()) {
+            return null
+        }
+
+        val (icon, message) = if (device.gupOverdrawShowing) {
+            Pair(Icons.GPU_OVERDRAW_HIDE, PluginBundle.message("hideGpuOverdrawTip"))
+        } else {
+            Pair(Icons.GPU_OVERDRAW_SHOW, PluginBundle.message("showGpuOverdrawTip"))
+        }
+        return IconButton(icon, message).apply {
+            onClickedListener = { listener?.onGpuOverdrawClicked(device) }
+            addMouseListener(hoverListener)
+        }
+    }
+
+    private fun generateHwuiRenderingButton(device: DeviceViewModel): IconButton? {
+        if (device.showDeveloperOptions.not()) {
+            return null
+        }
+
+        val (icon, message) = if (device.hwuiRenderingShowing) {
+            Pair(Icons.HWUI_RENDERING_HIDE, PluginBundle.message("showHwuiRenderingTip"))
+        } else {
+            Pair(Icons.HWUI_RENDERING_SHOW, PluginBundle.message("hideHwuiRenderingTip"))
+        }
+        return IconButton(icon, message).apply {
+            onClickedListener = { listener?.onHwuiRenderingClicked(device) }
+            addMouseListener(hoverListener)
+        }
+    }
+
     interface Listener {
         fun onConnectButtonClicked(device: DeviceViewModel)
         fun onDisconnectButtonClicked(device: DeviceViewModel)
@@ -207,6 +270,9 @@ class DevicePanel(device: DeviceViewModel) : JBPanel<DevicePanel>(GridBagLayout(
         fun onRemoveDeviceClicked(device: DeviceViewModel)
         fun onCopyDeviceIdClicked(device: DeviceViewModel)
         fun onCopyDeviceAddressClicked(device: DeviceViewModel)
+        fun onLayoutBoundsClicked(device: DeviceViewModel)
+        fun onGpuOverdrawClicked(device: DeviceViewModel)
+        fun onHwuiRenderingClicked(device: DeviceViewModel)
     }
 
     private companion object {

@@ -56,7 +56,10 @@ class Adb(
                     port = port,
                     androidVersion = androidVersion(deviceId),
                     apiLevel = apiLevel(deviceId),
-                    connectionType = connectionType
+                    connectionType = connectionType,
+                    layoutBoundsShowing = layoutBoundsShowing(deviceId),
+                    gupOverdrawShowing = gupOverdrawShowing(deviceId),
+                    hwuiRenderingShowing = hwuiRenderingShowing(deviceId)
                 )
             }
             .toList()
@@ -115,6 +118,24 @@ class Adb(
         "kill-server".execAndLog(this)
     }
 
+    fun changeLayoutBoundsStatus(deviceId: String, showing: Boolean): Flow<LogEntry> = flow {
+        val newPropValue = if (showing) "false" else "true"
+        "-s $deviceId shell setprop debug.layout $newPropValue".execAndLog(this)
+        "-s $deviceId shell service call activity 1599295570".execAndLog(this)
+    }
+
+    fun changeGpuOverdrawStatus(deviceId: String, showing: Boolean): Flow<LogEntry> = flow {
+        val newPropValue = if (showing) "false" else "show"
+        "-s $deviceId shell setprop debug.hwui.overdraw $newPropValue".execAndLog(this)
+        "-s $deviceId shell service call activity 1599295570".execAndLog(this)
+    }
+
+    fun changeHwuiRenderingStatus(deviceId: String, showing: Boolean): Flow<LogEntry> = flow {
+        val newPropValue = if (showing) "false" else "visual_bars"
+        "-s $deviceId shell setprop debug.hwui.profile $newPropValue".execAndLog(this)
+        "-s $deviceId shell service call activity 1599295570".execAndLog(this)
+    }
+
     private fun serialNumber(deviceId: String): String {
         return "-s $deviceId shell getprop ro.serialno".exec().firstLine()
     }
@@ -133,6 +154,18 @@ class Adb(
 
     private fun apiLevel(deviceId: String): String {
         return "-s $deviceId shell getprop ro.build.version.sdk".exec().firstLine().trim()
+    }
+
+    private fun layoutBoundsShowing(deviceId: String): Boolean {
+        return "-s $deviceId shell getprop debug.layout".exec().firstLine().trim() == "true"
+    }
+
+    private fun gupOverdrawShowing(deviceId: String): Boolean {
+        return "-s $deviceId shell getprop debug.hwui.overdraw".exec().firstLine().trim() == "show"
+    }
+
+    private fun hwuiRenderingShowing(deviceId: String): Boolean {
+        return "-s $deviceId shell getprop debug.hwui.profile".exec().firstLine().trim() == "visual_bars"
     }
 
     @TestOnly

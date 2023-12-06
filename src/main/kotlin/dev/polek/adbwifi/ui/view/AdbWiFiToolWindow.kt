@@ -70,6 +70,18 @@ class AdbWiFiToolWindow(
         override fun onCopyDeviceAddressClicked(device: DeviceViewModel) {
             presenter.onCopyDeviceAddressClicked(device)
         }
+
+        override fun onLayoutBoundsClicked(device: DeviceViewModel) {
+            presenter.onLayoutBoundsClicked(device)
+        }
+
+        override fun onGpuOverdrawClicked(device: DeviceViewModel) {
+            presenter.onGpuOverdrawClicked(device)
+        }
+
+        override fun onHwuiRenderingClicked(device: DeviceViewModel) {
+            presenter.onHwuiRenderingClicked(device)
+        }
     }
 
     private val splitter = JBSplitter(true, "AdbWifi.ShellPaneProportion", DEFAULT_PANEL_PROPORTION)

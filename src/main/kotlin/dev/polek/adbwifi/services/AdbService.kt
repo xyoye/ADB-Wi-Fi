@@ -55,6 +55,24 @@ class AdbService : Disposable {
         }
     }
 
+    suspend fun onChangeLayoutBoundsStatus(device: Device) {
+        adb.changeLayoutBoundsStatus(device.id, device.layoutBoundsShowing).collect { logEntry ->
+            logService.commandHistory.add(logEntry)
+        }
+    }
+
+    suspend fun onChangeGpuOverdrawStatus(device: Device) {
+        adb.changeGpuOverdrawStatus(device.id, device.gupOverdrawShowing).collect { logEntry ->
+            logService.commandHistory.add(logEntry)
+        }
+    }
+
+    suspend fun onChangeHwuiRenderingStatus(device: Device) {
+        adb.changeHwuiRenderingStatus(device.id, device.hwuiRenderingShowing).collect { logEntry ->
+            logService.commandHistory.add(logEntry)
+        }
+    }
+
     fun restartAdb() {
         appCoroutineScope.launch(Dispatchers.Default) {
             adb.disconnectAllDevices().collect { logEntry ->

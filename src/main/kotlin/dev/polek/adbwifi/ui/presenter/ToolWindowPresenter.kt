@@ -132,6 +132,24 @@ class ToolWindowPresenter : BasePresenter<ToolWindowView>() {
         copyToClipboard(address.ip)
     }
 
+    fun onLayoutBoundsClicked(device: DeviceViewModel) {
+        launch(IO) {
+            adbService.onChangeLayoutBoundsStatus(device.device)
+        }
+    }
+
+    fun onGpuOverdrawClicked(device: DeviceViewModel) {
+        launch(IO) {
+            adbService.onChangeGpuOverdrawStatus(device.device)
+        }
+    }
+
+    fun onHwuiRenderingClicked(device: DeviceViewModel) {
+        launch(IO) {
+            adbService.onChangeHwuiRenderingStatus(device.device)
+        }
+    }
+
     private fun onDevicesUpdated(model: List<Device>) {
         devices = model.map { it.toViewModel() }
         pinnedDevices = pinDeviceService.pinnedDevices.toViewModel()

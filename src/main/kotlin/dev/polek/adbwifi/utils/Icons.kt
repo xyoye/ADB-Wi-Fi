@@ -17,4 +17,10 @@ object Icons {
     val DELETE = IconLoader.getIcon("/icons/deleteIcon.svg", Icons::class.java)
     val OK = IconLoader.getIcon("AllIcons.General.InspectionsOK", Icons::class.java)
     val ERROR = IconLoader.getIcon("AllIcons.General.Error", Icons::class.java)
+    val LAYOUT_BOUNDS_SHOW = IconLoader.getIcon("/icons/layout_bounds_show.svg", Icons::class.java)
+    val LAYOUT_BOUNDS_HIDE = IconLoader.getIcon("/icons/layout_bounds_hide.svg", Icons::class.java)
+    val GPU_OVERDRAW_SHOW = IconLoader.getIcon("/icons/gpu_overdraw_show.svg", Icons::class.java)
+    val GPU_OVERDRAW_HIDE = IconLoader.getIcon("/icons/gpu_overdraw_hide.svg", Icons::class.java)
+    val HWUI_RENDERING_SHOW = IconLoader.getIcon("/icons/hwui_rendering_show.svg", Icons::class.java)
+    val HWUI_RENDERING_HIDE = IconLoader.getIcon("/icons/hwui_rendering_hide.svg", Icons::class.java)
 }

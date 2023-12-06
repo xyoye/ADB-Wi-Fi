@@ -12,7 +12,10 @@ data class Device(
     val apiLevel: String,
     val connectionType: ConnectionType,
     val isPinnedDevice: Boolean = false,
-    var isConnected: Boolean = false
+    var isConnected: Boolean = false,
+    val layoutBoundsShowing: Boolean = false,
+    val gupOverdrawShowing: Boolean = false,
+    val hwuiRenderingShowing: Boolean = false
 ) {
     val uniqueId: String = "$serialNumber-$id"
     val isUsbDevice = connectionType == USB
