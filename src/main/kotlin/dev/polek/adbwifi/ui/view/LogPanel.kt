@@ -2,6 +2,7 @@ package dev.polek.adbwifi.ui.view
 
 import com.intellij.ui.JBColor
 import com.intellij.util.ui.components.BorderLayoutPanel
+import dev.polek.adbwifi.ERROR_TAG
 import dev.polek.adbwifi.model.LogEntry
 import javax.swing.JTextPane
 import javax.swing.border.EmptyBorder
@@ -50,11 +51,20 @@ class LogPanel : BorderLayoutPanel() {
                 }
                 is LogEntry.Output -> {
                     if (entry.text.isNotBlank()) {
-                        appendLine(entry.text)
-                        appendLine("<br/>")
+                        entry.text.split("\n").forEach {
+                            appendLine(formatOutput(it))
+                            appendLine("<br/>")
+                        }
                     }
                 }
             }
+        }
+
+        private fun formatOutput(output: String): String {
+            if (output.startsWith(ERROR_TAG)) {
+                return "<span style=\"color:red;\">${output.substring(ERROR_TAG.length)}</span>"
+            }
+            return output
         }
     }
 }

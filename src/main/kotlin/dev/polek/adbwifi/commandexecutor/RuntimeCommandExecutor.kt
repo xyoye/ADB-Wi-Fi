@@ -1,5 +1,6 @@
 package dev.polek.adbwifi.commandexecutor
 
+import dev.polek.adbwifi.ERROR_TAG
 import dev.polek.adbwifi.LOG
 import dev.polek.adbwifi.utils.output
 import kotlinx.coroutines.delay
@@ -13,7 +14,9 @@ class RuntimeCommandExecutor : CommandExecutor {
         log { "exec> $command ${envp.joinToString()}" }
 
         val process = runtime.exec(command, envp)
-        return process.inputStream.bufferedReader().lineSequence()
+        val stdInput = process.inputStream.bufferedReader().lineSequence()
+        val stdError = process.errorStream.bufferedReader().lineSequence().map { "$ERROR_TAG$it" }
+        return stdInput + stdError
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
