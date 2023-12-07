@@ -140,6 +140,14 @@ class Adb(
         "-s $deviceId install -t -r $apkPath".execAndLog(this)
     }
 
+    fun clearApplicationData(deviceId: String, packageName: String): String {
+        return try {
+            commandExecutor.exec(adbCommand("-s $deviceId shell pm clear $packageName")).joinToString("\n")
+        } catch (e: IOException) {
+            e.message ?: "Connection failed"
+        }
+    }
+
     private fun serialNumber(deviceId: String): String {
         return "-s $deviceId shell getprop ro.serialno".exec().firstLine()
     }
@@ -170,6 +178,10 @@ class Adb(
 
     private fun hwuiRenderingShowing(deviceId: String): Boolean {
         return "-s $deviceId shell getprop debug.hwui.profile".exec().firstLine().trim() == "visual_bars"
+    }
+
+    fun getFocusedApplication(deviceId: String): String {
+        return "-s $deviceId shell dumpsys activity | grep -i 'mFocusedApp' | cut -d '/' -f1 | sed 's/.* //g'".exec().firstLine()
     }
 
     @TestOnly

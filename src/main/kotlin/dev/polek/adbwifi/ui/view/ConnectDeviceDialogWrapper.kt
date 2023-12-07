@@ -16,7 +16,6 @@ import dev.polek.adbwifi.utils.appCoroutineScope
 import dev.polek.adbwifi.utils.makeMonospaced
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
 import java.awt.GridBagConstraints
 import java.awt.Insets
 import javax.swing.Action
@@ -140,12 +139,10 @@ class ConnectDeviceDialogWrapper : DialogWrapper(true) {
         val adbService = service<AdbService>()
         connectJob = appCoroutineScope.launch(IO) {
             val output = adbService.connect(ip, port)
-            withContext(Main) {
-                hideConnectionProgress()
-                outputLabel.text = output
-                outputLabel.isVisible = true
-                ipTextField.requestFocusInWindow()
-            }
+            hideConnectionProgress()
+            outputLabel.text = output
+            outputLabel.isVisible = true
+            ipTextField.requestFocusInWindow()
         }
     }
 

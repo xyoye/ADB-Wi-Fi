@@ -156,6 +156,10 @@ class ToolWindowPresenter : BasePresenter<ToolWindowView>() {
         }
     }
 
+    fun onGetFocusedApplication(device: DeviceViewModel): String {
+        return adbService.getFocusedApplication(device.device)
+    }
+
     private fun onDevicesUpdated(model: List<Device>) {
         devices = model.map { it.toViewModel() }
         pinnedDevices = pinDeviceService.pinnedDevices.toViewModel()

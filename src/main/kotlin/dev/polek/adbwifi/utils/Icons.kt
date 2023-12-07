@@ -23,4 +23,5 @@ object Icons {
     val GPU_OVERDRAW_HIDE = IconLoader.getIcon("/icons/gpu_overdraw_hide.svg", Icons::class.java)
     val HWUI_RENDERING_SHOW = IconLoader.getIcon("/icons/hwui_rendering_show.svg", Icons::class.java)
     val HWUI_RENDERING_HIDE = IconLoader.getIcon("/icons/hwui_rendering_hide.svg", Icons::class.java)
+    val CLEAR_APP_DATA = IconLoader.getIcon("/icons/clear_app_data.svg", Icons::class.java)
 }

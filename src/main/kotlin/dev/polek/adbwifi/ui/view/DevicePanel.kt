@@ -126,6 +126,11 @@ class DevicePanel(device: DeviceViewModel) : JBPanel<DevicePanel>(GridBagLayout(
 
         val actionButtons = arrayListOf<JComponent>()
 
+        // clear applciation data
+        generateClearAppDataButton(device)?.let {
+            actionButtons.add(it)
+        }
+
         // layout bounds
         generateLayoutBoundsButton(device)?.let {
             actionButtons.add(it)
@@ -270,6 +275,22 @@ class DevicePanel(device: DeviceViewModel) : JBPanel<DevicePanel>(GridBagLayout(
         }
     }
 
+    private fun generateClearAppDataButton(device: DeviceViewModel): IconButton? {
+        if (device.isConnected.not()) {
+            return null
+        }
+        return IconButton(
+            Icons.CLEAR_APP_DATA,
+            PluginBundle.message("clearApplicationData")
+        ).apply {
+            onClickedListener = {
+                val packageName = listener?.onGetFocusedApplication(device) ?: ""
+                ClearAppDataDialogWrapper(device.device, packageName).show()
+            }
+            addMouseListener(hoverListener)
+        }
+    }
+
     interface Listener {
         fun onConnectButtonClicked(device: DeviceViewModel)
         fun onDisconnectButtonClicked(device: DeviceViewModel)
@@ -281,6 +302,7 @@ class DevicePanel(device: DeviceViewModel) : JBPanel<DevicePanel>(GridBagLayout(
         fun onGpuOverdrawClicked(device: DeviceViewModel)
         fun onHwuiRenderingClicked(device: DeviceViewModel)
         fun onApkFileDrop(device: DeviceViewModel, apkPath: String)
+        fun onGetFocusedApplication(device: DeviceViewModel): String
     }
 
     private companion object {

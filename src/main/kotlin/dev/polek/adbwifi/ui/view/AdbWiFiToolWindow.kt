@@ -86,6 +86,10 @@ class AdbWiFiToolWindow(
         override fun onApkFileDrop(device: DeviceViewModel, apkPath: String) {
             presenter.onApkFileDrop(device, apkPath)
         }
+
+        override fun onGetFocusedApplication(device: DeviceViewModel): String {
+            return presenter.onGetFocusedApplication(device)
+        }
     }
 
     private val splitter = JBSplitter(true, "AdbWifi.ShellPaneProportion", DEFAULT_PANEL_PROPORTION)

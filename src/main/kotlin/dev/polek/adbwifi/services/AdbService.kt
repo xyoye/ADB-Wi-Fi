@@ -79,6 +79,14 @@ class AdbService : Disposable {
         }
     }
 
+    fun getFocusedApplication(device: Device): String {
+        return adb.getFocusedApplication(device.id)
+    }
+
+    fun onClearApplicationData(device: Device, packageName: String): String {
+        return adb.clearApplicationData(device.id, packageName)
+    }
+
     fun restartAdb() {
         appCoroutineScope.launch(Dispatchers.Default) {
             adb.disconnectAllDevices().collect { logEntry ->
