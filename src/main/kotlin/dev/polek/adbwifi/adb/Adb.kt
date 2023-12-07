@@ -66,7 +66,7 @@ class Adb(
 
         devices.forEach { device ->
             device.isConnected = when {
-                device.isWifiDevice -> true
+                device.isUsbDevice -> true
                 device.serialNumber.isBlank() -> false
                 else -> {
                     val wifiDevice = devices.firstOrNull {
@@ -134,6 +134,10 @@ class Adb(
         val newPropValue = if (showing) "false" else "visual_bars"
         "-s $deviceId shell setprop debug.hwui.profile $newPropValue".execAndLog(this)
         "-s $deviceId shell service call activity 1599295570".execAndLog(this)
+    }
+
+    fun installApk(deviceId: String, apkPath: String): Flow<LogEntry> = flow {
+        "-s $deviceId install -t -r $apkPath".execAndLog(this)
     }
 
     private fun serialNumber(deviceId: String): String {

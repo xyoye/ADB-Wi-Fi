@@ -82,6 +82,10 @@ class AdbWiFiToolWindow(
         override fun onHwuiRenderingClicked(device: DeviceViewModel) {
             presenter.onHwuiRenderingClicked(device)
         }
+
+        override fun onApkFileDrop(device: DeviceViewModel, apkPath: String) {
+            presenter.onApkFileDrop(device, apkPath)
+        }
     }
 
     private val splitter = JBSplitter(true, "AdbWifi.ShellPaneProportion", DEFAULT_PANEL_PROPORTION)

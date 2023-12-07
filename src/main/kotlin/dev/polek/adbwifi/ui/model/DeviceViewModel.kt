@@ -31,8 +31,8 @@ data class DeviceViewModel(
     val uniqueId: String
         get() = device.uniqueId
 
-    val showDeveloperOptions: Boolean
-        get() = device.isUsbDevice || (device.isWifiDevice && device.isConnected)
+    val isConnected: Boolean
+        get() = device.isConnected
 
     val layoutBoundsShowing: Boolean
         get() = device.layoutBoundsShowing

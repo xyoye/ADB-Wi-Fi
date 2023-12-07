@@ -73,6 +73,12 @@ class AdbService : Disposable {
         }
     }
 
+    suspend fun onInstallApk(device: Device, apkPath: String) {
+        adb.installApk(device.id, apkPath).collect { logEntry ->
+            logService.commandHistory.add(logEntry)
+        }
+    }
+
     fun restartAdb() {
         appCoroutineScope.launch(Dispatchers.Default) {
             adb.disconnectAllDevices().collect { logEntry ->

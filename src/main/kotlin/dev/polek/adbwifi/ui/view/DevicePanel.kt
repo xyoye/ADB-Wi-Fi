@@ -14,6 +14,7 @@ import dev.polek.adbwifi.utils.Icons
 import dev.polek.adbwifi.utils.flowPanel
 import dev.polek.adbwifi.utils.makeBold
 import dev.polek.adbwifi.utils.panel
+import dev.polek.adbwifi.utils.ApkFileDropHandler
 import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
@@ -39,6 +40,12 @@ class DevicePanel(device: DeviceViewModel) : JBPanel<DevicePanel>(GridBagLayout(
     }
 
     init {
+        if (device.isConnected) {
+            ApkFileDropHandler.register(this) {
+                listener?.onApkFileDrop(device, it)
+            }
+        }
+
         background = JBColor.background()
 
         minimumSize = Dimension(0, LIST_ITEM_HEIGHT)
@@ -216,7 +223,7 @@ class DevicePanel(device: DeviceViewModel) : JBPanel<DevicePanel>(GridBagLayout(
     }
 
     private fun generateLayoutBoundsButton(device: DeviceViewModel): IconButton? {
-        if (device.showDeveloperOptions.not()) {
+        if (device.isConnected.not()) {
             return null
         }
 
@@ -232,7 +239,7 @@ class DevicePanel(device: DeviceViewModel) : JBPanel<DevicePanel>(GridBagLayout(
     }
 
     private fun generateGupOverdrawButton(device: DeviceViewModel): IconButton? {
-        if (device.showDeveloperOptions.not()) {
+        if (device.isConnected.not()) {
             return null
         }
 
@@ -248,7 +255,7 @@ class DevicePanel(device: DeviceViewModel) : JBPanel<DevicePanel>(GridBagLayout(
     }
 
     private fun generateHwuiRenderingButton(device: DeviceViewModel): IconButton? {
-        if (device.showDeveloperOptions.not()) {
+        if (device.isConnected.not()) {
             return null
         }
 
@@ -273,6 +280,7 @@ class DevicePanel(device: DeviceViewModel) : JBPanel<DevicePanel>(GridBagLayout(
         fun onLayoutBoundsClicked(device: DeviceViewModel)
         fun onGpuOverdrawClicked(device: DeviceViewModel)
         fun onHwuiRenderingClicked(device: DeviceViewModel)
+        fun onApkFileDrop(device: DeviceViewModel, apkPath: String)
     }
 
     private companion object {

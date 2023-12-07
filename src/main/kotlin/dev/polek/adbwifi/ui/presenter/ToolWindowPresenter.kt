@@ -150,6 +150,12 @@ class ToolWindowPresenter : BasePresenter<ToolWindowView>() {
         }
     }
 
+    fun onApkFileDrop(device: DeviceViewModel, apkPath: String) {
+        launch(IO) {
+            adbService.onInstallApk(device.device, apkPath)
+        }
+    }
+
     private fun onDevicesUpdated(model: List<Device>) {
         devices = model.map { it.toViewModel() }
         pinnedDevices = pinDeviceService.pinnedDevices.toViewModel()
